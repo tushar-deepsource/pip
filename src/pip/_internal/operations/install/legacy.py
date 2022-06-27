@@ -70,6 +70,8 @@ def install(
     unpacked_source_directory: str,
     req_description: str,
 ) -> bool:
+    logger.debug("setup.py installs are disabled.")
+    return False
 
     header_dir = scheme.headers
 
