@@ -238,9 +238,6 @@ def _build_one_inside_env(
     global_options: List[str],
     editable: bool,
 ) -> Optional[str]:
-    logger.info("Building wheels is disabled.")
-    return None
-
     with TempDirectory(kind="wheel") as temp_dir:
         assert req.name
         if req.use_pep517:
@@ -269,6 +266,9 @@ def _build_one_inside_env(
                     tempd=temp_dir.path,
                 )
         else:
+            logger.info("Building setup.py wheels is disabled.")
+            return None
+
             wheel_path = build_wheel_legacy(
                 name=req.name,
                 setup_py_path=req.setup_py_path,
@@ -334,9 +334,6 @@ def build(
     :return: The list of InstallRequirement that succeeded to build and
         the list of InstallRequirement that failed to build.
     """
-    logger.info("Building wheels is disabled.")
-    return [], []
-
     if not requirements:
         return [], []
 
