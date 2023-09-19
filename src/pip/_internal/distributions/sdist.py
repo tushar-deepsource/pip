@@ -27,6 +27,7 @@ class SourceDistribution(AbstractDistribution):
         build_isolation: bool,
         check_build_deps: bool,
     ) -> None:
+        raise InstallationError(f"setup.py installs disabled")
         # Load pyproject.toml, to determine whether PEP 517 is to be used
         self.req.load_pyproject_toml()
 
@@ -63,6 +64,7 @@ class SourceDistribution(AbstractDistribution):
     def _prepare_build_backend(self, finder: PackageFinder) -> None:
         # Isolate in a BuildEnvironment and install the build-time
         # requirements.
+        return
         pyproject_requires = self.req.pyproject_requires
         assert pyproject_requires is not None
 
@@ -87,6 +89,7 @@ class SourceDistribution(AbstractDistribution):
             )
 
     def _get_build_requires_wheel(self) -> Iterable[str]:
+        return []
         with self.req.build_env:
             runner = runner_with_spinner_message("Getting requirements to build wheel")
             backend = self.req.pep517_backend
@@ -95,6 +98,7 @@ class SourceDistribution(AbstractDistribution):
                 return backend.get_requires_for_build_wheel()
 
     def _get_build_requires_editable(self) -> Iterable[str]:
+        return []
         with self.req.build_env:
             runner = runner_with_spinner_message(
                 "Getting requirements to build editable"
@@ -105,6 +109,7 @@ class SourceDistribution(AbstractDistribution):
                 return backend.get_requires_for_build_editable()
 
     def _install_build_reqs(self, finder: PackageFinder) -> None:
+        return
         # Install any extra build dependencies that the backend requests.
         # This must be done in a second pass, as the pyproject.toml
         # dependencies must be installed before we can call the backend.
@@ -126,6 +131,7 @@ class SourceDistribution(AbstractDistribution):
     def _raise_conflicts(
         self, conflicting_with: str, conflicting_reqs: Set[Tuple[str, str]]
     ) -> None:
+        return
         format_string = (
             "Some build dependencies for {requirement} "
             "conflict with {conflicting_with}: {description}."
@@ -141,6 +147,7 @@ class SourceDistribution(AbstractDistribution):
         raise InstallationError(error_message)
 
     def _raise_missing_reqs(self, missing: Set[str]) -> None:
+        return
         format_string = (
             "Some build dependencies for {requirement} are missing: {missing}."
         )

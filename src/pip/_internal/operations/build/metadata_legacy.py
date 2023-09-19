@@ -45,7 +45,8 @@ def generate_metadata(
     Returns the generated metadata directory.
     """
     logger.info("setup.py installs are disabled")
-    raise MetadataGenerationFailed(package_details=details)
+    raise InstallationError(f"setup.py installs disabled")
+
 
     logger.debug(
         "Running setup.py (path:%s) egg_info for package %s",
